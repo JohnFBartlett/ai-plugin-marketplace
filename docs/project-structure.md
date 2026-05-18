@@ -15,6 +15,8 @@ The `project-manager` skill audits repos against this standard and nudges toward
 
 ## File layout
 
+### Simple repos (single app)
+
 ```
 <repo-root>/
 ├── README.md              REQUIRED — what the project is, how to run it
@@ -22,13 +24,63 @@ The `project-manager` skill audits repos against this standard and nudges toward
 └── docs/
     ├── STATUS.md          RECOMMENDED — current state at a glance
     ├── ROADMAP.md         RECOMMENDED — what's next
-    ├── ARCHITECTURE.md    OPTIONAL — how it's built (for non-trivial projects)
+    ├── ARCHITECTURE.md    OPTIONAL — how it's built
     ├── DECISIONS.md       OPTIONAL — decision log
     └── archive/
         └── YYYY-MM/       Archived docs, grouped by archival month
 ```
 
 No other top-level `*.md` files. If a doc doesn't fit one of these, it probably belongs in one of them or in `archive/`.
+
+### Multi-app / monorepo repos
+
+For repos with multiple distinct sub-apps (e.g. `backend/`, `web/`, `mobile/`), the standard nests: the top-level `docs/` covers cross-cutting concerns, and each sub-app has its own `docs/` with the same file contracts scoped to that app.
+
+```
+<repo-root>/
+├── README.md              REQUIRED — index to the sub-apps + top-level docs
+├── CLAUDE.md              OPTIONAL
+├── docs/                  Cross-cutting concerns
+│   ├── STATUS.md          Project-wide status (per-app status lives under each app)
+│   ├── ROADMAP.md         Cross-cutting roadmap (per-app roadmap lives under each app)
+│   ├── ARCHITECTURE.md    How the apps fit together — topology, shared services
+│   ├── DECISIONS.md       Project-wide decisions
+│   └── archive/
+└── <app-name>/            e.g. backend/, web/, mobile/
+    ├── README.md          App-specific overview
+    └── docs/
+        ├── STATUS.md      App-specific status
+        ├── ROADMAP.md     App-specific roadmap
+        ├── ARCHITECTURE.md
+        ├── DECISIONS.md
+        ├── RELEASES.md    OPTIONAL — release / deployment process (e.g. app store builds)
+        └── archive/
+```
+
+**Where to put what:**
+- **App-specific** content (a backend domain's data model, a mobile app's deployment steps) goes under that app's `docs/`.
+- **Cross-cutting** content (how the backend talks to the mobile app, payment-system design that spans services) goes in the top-level `docs/`.
+- If you're unsure, prefer the more specific location and link to it from the top level.
+
+**Top-level docs act as an index.** Top-level `STATUS.md` and `ROADMAP.md` shouldn't restate per-app status — they should link to it and only add cross-cutting bullets. Top-level `ARCHITECTURE.md` describes the system topology, not the internals of any one app.
+
+### Splitting a section across multiple files
+
+When a single file gets unwieldy (especially `ARCHITECTURE.md` or `DECISIONS.md`), split it into a directory:
+
+```
+docs/architecture/
+├── README.md              Index — one paragraph + links to the sub-files
+├── data-model.md
+├── auth.md
+└── deployment.md
+```
+
+The same applies to `decisions/` (one file per decision) or any other section. The index file (`README.md` inside the directory) acts as a TOC and follows the same frontmatter conventions. Sub-files don't need the standard top-level headings — they have their own.
+
+### What's deliberately out of scope (for now)
+
+A separate structured doc-DB (e.g. SQLite or JSON index of all docs across all repos, queryable by AI agents) would speed up cross-repo lookups, but it adds a second source of truth that has to stay in sync. The current approach — known filenames + known headings + YAML frontmatter — covers most agent-parsing needs without that maintenance burden. Revisit if frontmatter-based parsing proves insufficient.
 
 ## Frontmatter
 
@@ -125,7 +177,7 @@ Order within each section is priority order. Link to GitHub issues where possibl
 
 ### docs/ARCHITECTURE.md
 
-Optional. Use when the project has enough surface area that future-you needs a map.
+Optional. Use when the project has enough surface area that future-you needs a map. May be split into `docs/architecture/` if a single file gets too long.
 
 ```markdown
 ## Stack
@@ -143,6 +195,30 @@ Optional. Use when the project has enough surface area that future-you needs a m
 ## Deployment
 
 <how it runs in production>
+```
+
+In a multi-app repo, the top-level `ARCHITECTURE.md` covers topology and shared concerns; each app's own `ARCHITECTURE.md` covers that app's internals.
+
+### docs/RELEASES.md (optional)
+
+For apps with non-trivial release/deployment process — mobile app store builds, multi-step deploys, signing keys, etc.
+
+```markdown
+## Process
+
+<step-by-step release procedure>
+
+## Targets
+
+<each target with its own subsection: app stores, environments, etc.>
+
+## Credentials & secrets
+
+<where credentials live, NOT the credentials themselves>
+
+## Recent releases
+
+<reverse-chronological log of releases with version + date + notes>
 ```
 
 ### docs/DECISIONS.md
@@ -178,9 +254,13 @@ Keep it short. Long CLAUDE.md files are a sign that conventions should live in t
 
 When applying this structure to an existing repo:
 
-1. Create `docs/` and stub `STATUS.md` + `ROADMAP.md`.
-2. Move any existing planning/roadmap content out of the README into `ROADMAP.md`.
-3. Move any existing status/changelog content into `STATUS.md`.
-4. Add frontmatter to every doc.
-5. Move clearly-outdated docs to `docs/archive/YYYY-MM/`.
-6. Update the README's `## Docs` section to link to whatever you ended up with.
+1. **Identify the topology.** Is this a single-app repo or a monorepo? If monorepo, list the sub-apps.
+2. Create `docs/` at the top level (and under each sub-app for monorepos) and stub `STATUS.md` + `ROADMAP.md`.
+3. For monorepos: identify which existing docs are cross-cutting vs app-specific, and place each at the right level.
+4. Move planning/roadmap content out of the README into `ROADMAP.md`.
+5. Move status/changelog content into `STATUS.md`.
+6. Add frontmatter to every doc.
+7. Move clearly-outdated docs to the nearest `archive/YYYY-MM/`.
+8. Update the README's `## Docs` section to link to the top-level docs (and, for monorepos, to each sub-app's README).
+
+For large existing repos with many docs (e.g. `smart-todo` with backend / web / mobile), don't try to do this in one pass. Migrate one sub-app at a time and let `/pm-doc-audit` keep flagging remaining gaps.

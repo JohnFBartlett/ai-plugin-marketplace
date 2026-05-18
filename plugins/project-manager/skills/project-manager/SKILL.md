@@ -109,16 +109,23 @@ Plain prose with bullets is fine. Don't format it like something to paste into S
 
 Find inconsistencies and outdated content in the docs — for future-you's benefit. When you come back to this project in 3 months, the docs are how you remember what's going on.
 
-There is a shared JFB documentation standard that audits should reference: see `docs/project-structure.md` in the `johnfbartlett/ai-plugin-marketplace` repo. It defines the expected file layout (`README.md`, `docs/STATUS.md`, `docs/ROADMAP.md`, `docs/ARCHITECTURE.md`, `docs/DECISIONS.md`, optional `CLAUDE.md`), required headings within each, and YAML frontmatter conventions. Fetch this file once at the start of an audit and use it as the reference.
+There is a shared JFB documentation standard that audits should reference: see `docs/project-structure.md` in the `johnfbartlett/ai-plugin-marketplace` repo. It defines the expected layout (simple repos vs multi-app monorepos), file contracts, frontmatter, and the option to split sections into directories. Fetch this file once at the start of an audit and use it as the reference.
 
-Fetch the target repo's README and any `*.md` at the root or in `docs/`. Check for:
+**Detect the topology first.** Before checking adherence, determine whether the target repo is single-app or multi-app:
+- Look for top-level dirs that look like sub-apps (`backend/`, `web/`, `mobile/`, `apps/<name>/`, etc.) — each containing its own `README.md` and source code.
+- If you find them, treat the repo as a monorepo and audit each app's `docs/` against the same standard scoped to that app, in addition to the top-level `docs/`.
+- Don't flag a sub-app's `docs/` directory or its files as "stray" — they're expected in a monorepo.
+
+Then fetch the target repo's docs and check for:
 
 1. **Structure adherence** — does the repo follow `docs/project-structure.md`?
-   - Required: `README.md` at root
-   - Recommended: `docs/STATUS.md`, `docs/ROADMAP.md`
-   - Stray top-level `*.md` files outside the standard (e.g. `NOTES.md`, `TODO.md`, `CHANGELOG.md` at root instead of inside `docs/`)
-   - Inside each known file: are the required headings present?
-   - Is YAML frontmatter (`last_updated`, `status`) present on `docs/*.md`?
+   - Required: `README.md` at root (and at each sub-app root in a monorepo)
+   - Recommended: `docs/STATUS.md`, `docs/ROADMAP.md` (top-level for monorepos cover cross-cutting; per-app cover that app)
+   - Stray top-level `*.md` files outside the standard (e.g. `NOTES.md`, `TODO.md`, `plan.md` at the repo root or inside an app, instead of fitting into the standard files)
+   - In a monorepo: docs in the top-level `docs/` that should be scoped to a sub-app (e.g. mobile-deployment specifics living at top level), and vice versa
+   - Required headings present inside each known file
+   - YAML frontmatter (`last_updated`, `status`) on every `docs/*.md`
+   - Split-into-directory cases (e.g. `docs/architecture/` instead of `docs/ARCHITECTURE.md`) — verify the directory has a `README.md` index
 2. **Stale references** — paths or package names that look wrong inside the docs. Only flag; don't grep the code unless asked.
 3. **Stale `last_updated`** — frontmatter date >6 months ago on a doc whose section is still claimed `active`.
 4. **Version drift** — version numbers in docs vs `package.json` / `pyproject.toml` if you fetched both this session.
@@ -126,7 +133,9 @@ Fetch the target repo's README and any `*.md` at the root or in `docs/`. Check f
 6. **TODO leftovers** in docs.
 7. **Internal contradictions** within this repo, only if you've read both contradicting passages.
 
-Output: numbered findings, severity, location (`path:line`), what's wrong, suggested fix. Group structure-adherence findings together and lead with them — they're usually the most actionable. **Read-only** — wait for greenlight before changing anything.
+Output: numbered findings, severity, location (`path:line`), what's wrong, suggested fix. Group structure-adherence findings together and lead with them. For monorepos, sub-group by app so the user can tackle one app at a time. **Read-only** — wait for greenlight before changing anything.
+
+For large existing repos, don't propose a single big-bang migration. Suggest tackling one app or one sub-section at a time.
 
 ### doc-archive
 
