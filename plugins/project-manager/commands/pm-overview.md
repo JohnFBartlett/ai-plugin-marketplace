@@ -1,8 +1,13 @@
 ---
-description: Snapshot of each JFB repo - purpose, stack, activity, open work. Pass a repo name to focus.
+description: Snapshot of one JFB repo - purpose, stack, open work. Pass a repo name, or you'll be asked.
 argument-hint: "[repo-name]"
 ---
 
-Run the **overview** capability from the `project-manager` skill.
+Run the **overview** capability from the `project-manager` skill against a single repo.
 
-If `$ARGUMENTS` is non-empty, narrow to that repo (partial match OK). Otherwise cover all JFB repos.
+Target repo:
+- If `$ARGUMENTS` is non-empty, use that repo (partial match OK).
+- Else infer from the current session if possible and confirm with the user.
+- Else ask the user which repo to focus on, offering "all repos" as a fallback.
+
+Only state facts verified by tool calls in this session. No inferred dates, counts, or activity claims.
