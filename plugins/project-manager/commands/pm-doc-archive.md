@@ -1,10 +1,13 @@
 ---
-description: Identify and archive outdated docs in JFB repos. Asks before writing.
+description: Identify and archive outdated docs in one JFB repo. Asks before writing.
 argument-hint: "[repo-name]"
 ---
 
-Run the **doc-archive** capability from the `project-manager` skill.
+Run the **doc-archive** capability from the `project-manager` skill against a single repo.
 
-If `$ARGUMENTS` is non-empty, narrow to that repo (partial match OK). Otherwise cover all JFB repos.
+Target repo:
+- If `$ARGUMENTS` is non-empty, use that repo (partial match OK).
+- Else infer from the current session if possible and confirm with the user.
+- Else ask the user which repo to focus on, offering "all repos" as a fallback.
 
-First propose archival candidates. Wait for confirmation before moving any files. When archiving, work on a feature branch and do not push without explicit approval.
+Propose archival candidates first. Wait for confirmation before moving any files. When archiving, work on a feature branch and do not push without explicit approval.

@@ -1,24 +1,28 @@
 ---
-description: Run the full PM sweep - overview, standup, roadmap, doc-audit, pitch - in one go. Pass a repo to focus.
+description: Run the full PM sweep on one JFB repo - overview, standup, roadmap, doc-audit, pitch.
 argument-hint: "[repo-name]"
 ---
 
-Run every read-only capability from the `project-manager` skill, in this order:
+Run every read-only capability from the `project-manager` skill against a single repo:
 
-1. **overview** — what each repo is and how healthy it looks
-2. **standup** — what shipped / what's open / what's blocked in the last 7 days
-3. **roadmap** — ranked priorities with rationale
-4. **doc-audit** — inconsistencies and stale references (findings only, no edits)
-5. **pitch** — 3-5 proposed extensions
+1. **overview**
+2. **standup**
+3. **roadmap**
+4. **doc-audit** (findings only, no edits)
+5. **pitch**
 
-If `$ARGUMENTS` is non-empty, narrow every section to that repo (partial match OK). Otherwise cover all JFB repos.
+Target repo:
+- If `$ARGUMENTS` is non-empty, use that repo (partial match OK).
+- Else infer from the current session if possible and confirm with the user.
+- Else ask the user which repo to focus on, offering "all repos" as a fallback. If they pick "all repos," loop and run this whole sweep once per repo, sequentially.
 
 ## Output format
 
-Render as one markdown report with a level-1 heading per section. Between sections, insert a one-line `---` rule. At the very top, include a "TL;DR" — three to five bullets pulled from across the sections (e.g. biggest blocker, highest-priority roadmap item, most actionable doc fix, most promising pitch).
+Render as one markdown report with a level-1 heading per section. Insert a `---` rule between sections. At the very top, include a TL;DR — three to five bullets pulled from across the sections.
 
 ## Execution
 
-- Fire per-repo GitHub lookups in parallel where the data is independent. Don't re-fetch the same README, issue list, or PR list twice across sections — gather once, reuse across sections.
-- This command is **read-only**. Do not run `doc-archive`. If the audit surfaces archival candidates, mention them in the doc-audit section and tell the user to run `/pm-doc-archive` to act on them.
-- If a section turns up no data (e.g. no open PRs in standup), still include the heading with a one-line "nothing to report" — don't silently drop sections.
+- **Cheap by default.** Don't fetch commit history or other deep data beyond what each capability explicitly needs. If a capability suggests "go deeper," surface that as a follow-up the user can request — don't run it.
+- Gather each piece of data once and reuse across sections (e.g. don't fetch the README twice).
+- This command is **read-only**. Do not run `doc-archive`. If the audit surfaces archival candidates, mention them and tell the user to run `/pm-doc-archive`.
+- If a section turns up no data, still include the heading with a one-line "nothing to report."

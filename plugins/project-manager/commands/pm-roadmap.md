@@ -1,8 +1,11 @@
 ---
-description: Ranked roadmap priorities across JFB repos with rationale. Pass a repo name to focus.
+description: Ranked roadmap priorities for one JFB repo. Pass a repo name, or you'll be asked.
 argument-hint: "[repo-name]"
 ---
 
-Run the **roadmap** capability from the `project-manager` skill.
+Run the **roadmap** capability from the `project-manager` skill against a single repo.
 
-If `$ARGUMENTS` is non-empty, narrow to that repo (partial match OK). Otherwise cover all JFB repos.
+Target repo:
+- If `$ARGUMENTS` is non-empty, use that repo (partial match OK).
+- Else infer from the current session if possible and confirm with the user.
+- Else ask the user which repo to focus on, offering "all repos" as a fallback.
