@@ -109,15 +109,24 @@ Plain prose with bullets is fine. Don't format it like something to paste into S
 
 Find inconsistencies and outdated content in the docs — for future-you's benefit. When you come back to this project in 3 months, the docs are how you remember what's going on.
 
-Fetch the README and any `*.md` at the root or in `docs/`. Check for:
+There is a shared JFB documentation standard that audits should reference: see `docs/project-structure.md` in the `johnfbartlett/ai-plugin-marketplace` repo. It defines the expected file layout (`README.md`, `docs/STATUS.md`, `docs/ROADMAP.md`, `docs/ARCHITECTURE.md`, `docs/DECISIONS.md`, optional `CLAUDE.md`), required headings within each, and YAML frontmatter conventions. Fetch this file once at the start of an audit and use it as the reference.
 
-1. **Stale references** — paths or package names that look wrong inside the docs. Only flag; don't grep the code unless asked.
-2. **Version drift** — version numbers in docs vs `package.json` / `pyproject.toml` if you fetched both this session.
-3. **Dead links** — links to repo files; verify via the GitHub API.
-4. **TODO leftovers** in docs.
-5. **Internal contradictions** within this repo, only if you've read both contradicting passages.
+Fetch the target repo's README and any `*.md` at the root or in `docs/`. Check for:
 
-Output: numbered findings, severity, location (`path:line`), what's wrong, suggested fix. **Read-only** — wait for greenlight before changing anything.
+1. **Structure adherence** — does the repo follow `docs/project-structure.md`?
+   - Required: `README.md` at root
+   - Recommended: `docs/STATUS.md`, `docs/ROADMAP.md`
+   - Stray top-level `*.md` files outside the standard (e.g. `NOTES.md`, `TODO.md`, `CHANGELOG.md` at root instead of inside `docs/`)
+   - Inside each known file: are the required headings present?
+   - Is YAML frontmatter (`last_updated`, `status`) present on `docs/*.md`?
+2. **Stale references** — paths or package names that look wrong inside the docs. Only flag; don't grep the code unless asked.
+3. **Stale `last_updated`** — frontmatter date >6 months ago on a doc whose section is still claimed `active`.
+4. **Version drift** — version numbers in docs vs `package.json` / `pyproject.toml` if you fetched both this session.
+5. **Dead links** — links to repo files; verify via the GitHub API.
+6. **TODO leftovers** in docs.
+7. **Internal contradictions** within this repo, only if you've read both contradicting passages.
+
+Output: numbered findings, severity, location (`path:line`), what's wrong, suggested fix. Group structure-adherence findings together and lead with them — they're usually the most actionable. **Read-only** — wait for greenlight before changing anything.
 
 ### doc-archive
 
