@@ -10,17 +10,13 @@ Private Claude Code plugin marketplace for JFB projects.
 
 ## Install — cloud sessions (Claude Code on the web)
 
-The default environment runs `setup/install.sh` on session start. The script writes `~/.claude/settings.json` to register this marketplace and enable the default plugin set.
+Paste the contents of `setup/install.sh` directly into your environment's setup script field. The script writes `~/.claude/settings.json` with `extraKnownMarketplaces` + `enabledPlugins`; Claude Code fetches the marketplace contents inside the session, where GitHub creds are available.
 
-To wire it in, point the environment's setup script at:
+Why inline instead of `curl | bash` or `git clone`: this repo is private, and the cloud env's setup phase runs before user secrets / GitHub creds are injected, so any fetch from GitHub during setup fails with 401/128. Inlining sidesteps the problem.
 
-```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/johnfbartlett/ai-plugin-marketplace/main/setup/install.sh)
-```
+Requires `jq` in the env (Claude Code on the web envs have it preinstalled).
 
-Requires `jq` in the env (Claude Code on the web envs have it by default).
-
-To change which plugins auto-enable, edit `PLUGINS_TO_ENABLE` in `setup/install.sh`.
+To change which plugins auto-enable, edit `PLUGINS_TO_ENABLE` in both `setup/install.sh` (canonical reference) and the inlined copy in your env's setup script field.
 
 ## Install — local sessions
 
@@ -42,7 +38,7 @@ settings/local-settings.json.example  Local user settings snippet
 
 1. Create `plugins/<name>/` with `.claude-plugin/plugin.json`, plus `skills/` and/or `commands/`.
 2. Add an entry to `.claude-plugin/marketplace.json` under `plugins`.
-3. To auto-install it everywhere, add the name to `PLUGINS_TO_ENABLE` in `setup/install.sh` and to `enabledPlugins` in `settings/local-settings.json.example`.
+3. To auto-install it everywhere, add the name to `PLUGINS_TO_ENABLE` in `setup/install.sh`, to `enabledPlugins` in `settings/local-settings.json.example`, **and** to the inlined copy of `install.sh` in your cloud env's setup script field.
 
 ## Development
 

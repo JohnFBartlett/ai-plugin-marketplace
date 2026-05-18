@@ -6,11 +6,11 @@
 #
 # This script is idempotent: re-running it is safe.
 #
-# Wire it into your default environment by pointing the env's
-# "setup script" (or post-clone hook) at:
-#   bash <(curl -fsSL https://raw.githubusercontent.com/johnfbartlett/ai-plugin-marketplace/main/setup/install.sh)
-# or, when the marketplace repo is cloned into the env:
-#   bash ai-plugin-marketplace/setup/install.sh
+# Usage: paste this file's contents directly into the cloud env's setup
+# script field. (Fetching it via curl or git clone during setup fails
+# because this repo is private and GitHub creds are not yet available at
+# the setup phase.) For local sessions, drop the snippet in
+# settings/local-settings.json.example into ~/.claude/settings.json.
 
 set -euo pipefail
 
