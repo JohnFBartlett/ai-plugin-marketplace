@@ -37,9 +37,10 @@ Rules:
 - **Skip if nothing's urgent.** If nothing actionable came up, write "Focus: nothing pressing. If you spend time here, pick from the roadmap." — don't pad.
 
 Example tone (do NOT use these literally, just calibrate):
-- "PR #14 has been open for 2 months — either finish it or close it before you forget what it was about."
+- "README marks 'redfin import' as `WIP` but the last commit on that path was 4 months ago — either finish it or update the wording so future-you isn't confused."
+- "You have uncommitted changes in `src/foo.ts` from your local working tree. Decide whether to land them before starting something new."
 - "You opened issue #22 ('add CSV export') 6 weeks ago and labeled it `next`. Pick a Saturday."
-- "The README still says 'WIP: redfin import' but PR #11 shipped that in March. Update the README so future-you isn't confused."
+- "Local branch `experiment-pricing-v2` has 4 commits not on origin. Either push it as a PR or delete it."
 - "Nothing pressing here. If you want to dip back in, the smallest open `enhancement` issue is #19."
 
 Focus is the section the user reads first. Make it sharp and personal.

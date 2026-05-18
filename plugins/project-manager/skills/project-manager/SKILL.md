@@ -54,12 +54,19 @@ The "what is this project and where did I leave it" snapshot.
 
 Default fetches:
 - README — what the project is
-- Open PRs — what was in flight when work stopped
+- Open PRs — only if any exist; this user usually merges fast and rarely leaves PRs open, so this is a weak signal most of the time
 - Open issues — what was on the mind
 
-For each open PR, briefly note: title, age, and (if visible) whether CI is passing. These are the dangling threads the user was working on. Same for the most recent few open issues — these are likely things they jotted down to themselves.
+**Dangling-thread detection.** Since open PRs aren't a reliable signal for this user, look for intent markers in docs that imply unfinished work. Scan the README and any `*.md` under `docs/` for phrases like `WIP`, `in progress`, `started`, `coming soon`, `TODO`, `TBD`, `🚧`. Each match is a candidate dangling thread — flag it with the file and line. The user will know whether it's actually still in-progress or just stale wording.
 
-Skip commit history unless asked. The output should leave the user able to answer "ok, where was I?" — not "is this project healthy by team-standards."
+If the session is checked out locally and you can run git, also surface:
+- Uncommitted changes (`git status --short`)
+- Local commits not on `origin/main` (`git log --oneline origin/main..HEAD`)
+- Recent branches not on the remote (`git branch --no-merged origin/main`)
+
+These local-state checks often reveal the actual dangling work for this user — code they wrote on a Saturday and never pushed.
+
+Skip remote commit history unless asked. The output should leave the user able to answer "ok, where was I?" — not "is this project healthy by team-standards."
 
 ### roadmap
 
@@ -81,13 +88,19 @@ Despite the name, this is **not** a team standup. It's a "what happened last tim
 
 Fetch:
 - PRs merged in the last 30 days (solo work, longer window than a team standup)
-- Currently open PRs and how long they've been open
 - Issues opened in the last 30 days
-- PRs that have been sitting >30 days — these are "you left this hanging," not "blocked by reviewers"
+- Currently open PRs, if any — usually none, since this user merges fast
+- If running locally: uncommitted changes and local commits ahead of `origin/main` — these are often the real "in flight" work
+
+Dangling-work signals to call out:
+- Doc intent markers (`WIP`, `in progress`, `started`, `TODO`, `🚧`) with no matching recent commit on the feature they describe
+- Unpushed local work (if detectable via git)
+- Any open PR sitting >30 days — uncommon for this user but worth flagging when it happens
 
 Output should read like a personal recap, not a status report:
 - "Last time you worked here you merged X, Y, Z."
-- "You still have PR #N open from 6 weeks ago — title: '...'"
+- "You have uncommitted changes in `src/foo.ts` — check before you start something new."
+- "README still says 'WIP: redfin import' but nothing has happened on that since June."
 - "You opened 3 issues for yourself in the last month, all unaddressed."
 
 Plain prose with bullets is fine. Don't format it like something to paste into Slack.
