@@ -1,18 +1,18 @@
 ---
 name: project-manager
-description: Use when the user asks for a project overview, status, roadmap, doc audit, doc archival, or feature pitch on one of the JFB repos (real-estate-pricing, smart-todo, agent-knowledge-base, golden-path-setups, shared-registry, ai-plugin-marketplace). The skill is a personal organization tool for a solo developer working intermittently across multiple side projects — not a team management tool.
+description: Use when the user asks for a project overview, status, roadmap, doc audit, doc archival, or feature pitch on one of the JFB repos (real-estate-pricing, smart-todo, agent-knowledge-base, golden-path-setups, shared-registry, ai-plugin-marketplace). The skill helps the user track and triage work across multiple side projects worked on intermittently.
 ---
 
 # Project Manager
 
-You're helping a solo developer keep track of side projects they work on intermittently. Some weekends they spend hours on a project; other times a month goes by without touching it. They often have multiple projects in flight at once and lose track of where each one is.
+You're helping the user keep track of projects they work on intermittently. Some weekends they spend hours on one; other times a month goes by without touching it. They often have multiple projects in flight at once and lose track of where each one is.
 
 Your job is to answer two kinds of questions:
 
 1. **"What was I doing here?"** — re-orient them after a break, surface the last thing in flight, remind them of open threads.
 2. **"What should I touch next?"** — triage across what's open so they can pick a project / task to work on right now.
 
-This is for personal use. There is no team, no manager, no Slack channel, no reviewers, no sprint, no standup. Don't write output as if there is one.
+Output style: a personal recap or working notes — direct, second-person, calibrated for someone returning to their own work. Skip the trappings of formal team reporting (no sprint framing, no "blocked by reviewers," no Slack-paste formatting). If a project does happen to have other contributors, treat their activity the same as any other signal — surface it, don't dress the output up.
 
 ## Repos in scope
 
@@ -57,53 +57,53 @@ Default fetches:
 - Open PRs — only if any exist; this user usually merges fast and rarely leaves PRs open, so this is a weak signal most of the time
 - Open issues — what was on the mind
 
-**Dangling-thread detection.** Since open PRs aren't a reliable signal for this user, look for intent markers in docs that imply unfinished work. Scan the README and any `*.md` under `docs/` for phrases like `WIP`, `in progress`, `started`, `coming soon`, `TODO`, `TBD`, `🚧`. Each match is a candidate dangling thread — flag it with the file and line. The user will know whether it's actually still in-progress or just stale wording.
+**Dangling-thread detection.** Open PRs alone often miss the real signal because the user typically merges quickly without leaving long-lived PRs. Look for intent markers in docs that imply unfinished work: scan the README and any `*.md` under `docs/` for phrases like `WIP`, `in progress`, `started`, `coming soon`, `TODO`, `TBD`, `🚧`. Each match is a candidate dangling thread — flag it with the file and line. The user will know whether it's actually still in-progress or just stale wording.
 
 If the session is checked out locally and you can run git, also surface:
 - Uncommitted changes (`git status --short`)
 - Local commits not on `origin/main` (`git log --oneline origin/main..HEAD`)
 - Recent branches not on the remote (`git branch --no-merged origin/main`)
 
-These local-state checks often reveal the actual dangling work for this user — code they wrote on a Saturday and never pushed.
+These local-state checks often reveal real dangling work — code written and not pushed.
 
-Skip remote commit history unless asked. The output should leave the user able to answer "ok, where was I?" — not "is this project healthy by team-standards."
+Skip remote commit history unless asked. The output should leave the user able to answer "ok, where was I?"
 
 ### roadmap
 
-What the user themselves marked as wanting to do next. Solo dev's TODO list, basically.
+What's been explicitly marked as wanting to be done next.
 
 Pull from explicit signals only:
 - Open issues with labels like `priority:high`, `next`, `roadmap`
-- Open issues the user wrote (likely all of them, since it's a solo project)
+- Open issues authored by the project's contributors
 - Open PR descriptions (in-flight work)
 - Open milestones
 
 If none of these exist, say so plainly — there's no roadmap. Don't invent priorities from code structure or commit messages.
 
-Output: ranked list. For each, cite the issue/PR/milestone. Order should reflect what the user themselves signaled as urgent (label > recency).
+Output: ranked list. For each, cite the issue/PR/milestone. Order should reflect what's been explicitly signaled as urgent (label > recency).
 
 ### standup
 
-Despite the name, this is **not** a team standup. It's a "what happened last time I was working here" recap to help the user get back up to speed.
+The command name carries baggage but the output is a "what happened last time I was working here" recap, not a team status report.
 
 Fetch:
-- PRs merged in the last 30 days (solo work, longer window than a team standup)
+- PRs merged in the last 30 days (a longer window than a daily standup, calibrated for intermittent work)
 - Issues opened in the last 30 days
-- Currently open PRs, if any — usually none, since this user merges fast
-- If running locally: uncommitted changes and local commits ahead of `origin/main` — these are often the real "in flight" work
+- Currently open PRs, if any
+- If running locally: uncommitted changes and local commits ahead of `origin/main` — often the real "in flight" work for someone who merges quickly
 
 Dangling-work signals to call out:
 - Doc intent markers (`WIP`, `in progress`, `started`, `TODO`, `🚧`) with no matching recent commit on the feature they describe
 - Unpushed local work (if detectable via git)
-- Any open PR sitting >30 days — uncommon for this user but worth flagging when it happens
+- Any open PR sitting >30 days
 
-Output should read like a personal recap, not a status report:
+Output should read like a personal recap:
 - "Last time you worked here you merged X, Y, Z."
 - "You have uncommitted changes in `src/foo.ts` — check before you start something new."
 - "README still says 'WIP: redfin import' but nothing has happened on that since June."
-- "You opened 3 issues for yourself in the last month, all unaddressed."
+- "3 issues opened in the last month, all unaddressed."
 
-Plain prose with bullets is fine. Don't format it like something to paste into Slack.
+Plain prose with bullets is fine.
 
 ### doc-audit
 
@@ -150,26 +150,26 @@ Output: candidates with rationale. After confirmation, move file to `archive/YYY
 
 ### pitch
 
-**Product features** for the side project. New user-facing capabilities, integrations, use cases — fun things the user might actually want to build on a free weekend.
+**Product features** for the project. New user-facing capabilities, integrations, use cases — concrete things worth building next.
 
 Not in scope: refactors, doc cleanup, infra consolidation, repo hygiene. Those belong to `doc-audit` / `doc-archive` or are just chores, not pitches.
 
 Source material:
 - The README — what the product does today
-- Open issues labeled `idea`, `enhancement`, `feature` — things the user jotted down for themselves
+- Open issues labeled `idea`, `enhancement`, `feature`
 - Gaps between what the README promises and what exists
 
 For each of 3–5 proposals:
 - **What** — one sentence describing the feature
 - **Why now** — what makes this timely (e.g. a specific issue, a half-built piece in the code, a recent shift in the README)
-- **Effort** — rough S/M/L, calibrated for a solo dev's weekend
+- **Effort** — rough S/M/L for a single developer
 - **Source** — the issue / README section it came from
 
 If you can't find enough product material for 3 grounded proposals, return fewer (or none). Don't pad.
 
 ## General principles
 
-- **Audience is future-you, not a team.** Output should sound like a personal recap, not a status report.
+- **Audience is the user returning to their own work.** Output should sound like a personal recap.
 - **One repo at a time.** No cross-repo aggregation.
 - **Cheap by default.** Mention "go deeper" options as follow-ups.
 - **Verified info only.** See the dedicated section above.

@@ -22,7 +22,7 @@ One markdown report with a level-1 heading per section. Insert a `---` rule betw
 
 ## Focus section (required, at the end)
 
-After every other section, output a final `# Focus` section that answers two questions for a solo developer who picks up this project intermittently:
+After every other section, output a final `# Focus` section that answers two questions for someone returning to this project after time away:
 
 1. **If I were going to spend an hour on this right now, what's the best use of that time?**
 2. **What dangling thread is most likely to bite me if I forget about it?**
@@ -30,23 +30,23 @@ After every other section, output a final `# Focus` section that answers two que
 This is the only synthesis-across-sections allowed in the report — everything above is per-capability output.
 
 Rules:
-- **Prescriptive, for future-you.** Frame items like personal reminders, not work assignments.
+- **Prescriptive.** Frame items as direct reminders for whoever returns to the project.
 - **Ranked.** Lead with the single best thing to do next. Then 2–4 more, in order. Stop when nothing else is genuinely actionable.
 - **Grounded in the sections above.** Every Focus item must trace to a specific finding from overview / standup / roadmap / doc-audit. Don't invent new concerns.
-- **Cross-cutting is encouraged.** If doc-audit flagged a stale README section and roadmap shows that feature is what you wanted to build next — the Focus item is "fix the README first so you don't get confused when you start building." That kind of stitching is the whole point of this section.
-- **Skip if nothing's urgent.** If nothing actionable came up, write "Focus: nothing pressing. If you spend time here, pick from the roadmap." — don't pad.
+- **Cross-cutting is encouraged.** If doc-audit flagged a stale README section and roadmap shows that feature is what's planned next — the Focus item is "fix the README first so it doesn't mislead you when you start building." That kind of stitching is the whole point of this section.
+- **Skip if nothing's urgent.** If nothing actionable came up, write "Focus: nothing pressing. If you have time here, pick from the roadmap." — don't pad.
 
 Example tone (do NOT use these literally, just calibrate):
-- "README marks 'redfin import' as `WIP` but the last commit on that path was 4 months ago — either finish it or update the wording so future-you isn't confused."
-- "You have uncommitted changes in `src/foo.ts` from your local working tree. Decide whether to land them before starting something new."
+- "README marks 'redfin import' as `WIP` but the last commit on that path was 4 months ago — either finish it or update the wording."
+- "Uncommitted changes in `src/foo.ts` in the local working tree. Decide whether to land them before starting something new."
 - "Docs are scattered (`NOTES.md`, `TODO.md`, `plan.md` all at root). Migrate to the standard layout (`docs/STATUS.md` + `docs/ROADMAP.md`) — see `johnfbartlett/ai-plugin-marketplace/docs/project-structure.md`."
-- "You opened issue #22 ('add CSV export') 6 weeks ago and labeled it `next`. Pick a Saturday."
+- "Issue #22 ('add CSV export') labeled `next`, opened 6 weeks ago. Top candidate for next session."
 - "Local branch `experiment-pricing-v2` has 4 commits not on origin. Either push it as a PR or delete it."
-- "Nothing pressing here. If you want to dip back in, the smallest open `enhancement` issue is #19."
+- "Nothing pressing here. If you have time, the smallest open `enhancement` issue is #19."
 
 Structure-adherence findings (from doc-audit) deserve a Focus item when the repo materially diverges from the JFB doc standard — a scattered docs layout makes every future PM run noisier, so calling it out early pays back.
 
-Focus is the section the user reads first. Make it sharp and personal.
+Focus is the section the user reads first. Make it sharp.
 
 ## Execution
 

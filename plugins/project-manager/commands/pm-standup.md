@@ -10,4 +10,4 @@ Target repo:
 - Else infer from the current session if possible and confirm with the user.
 - Else ask the user which repo to focus on, offering "all repos" as a fallback.
 
-Despite the command name, this is a personal recap — not a team status report. Output should help future-you remember where things were left.
+The output is a personal recap to help you (or anyone returning to the project) pick up where things were left, not a formal status report.
