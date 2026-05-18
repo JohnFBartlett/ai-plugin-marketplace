@@ -33,6 +33,12 @@ Local Claude Code sessions DO support `/plugin`. Run once:
 
 Or merge `settings/local-settings.json.example` into `~/.claude/settings.json` for auto-enable.
 
+## Standards
+
+| Standard | Description |
+|---|---|
+| [`docs/project-structure.md`](docs/project-structure.md) | JFB documentation layout: required files, headings, frontmatter. Referenced by `/pm-doc-audit` and applied across JFB repos. |
+
 ## Layout
 
 ```
@@ -41,6 +47,7 @@ plugins/<plugin-name>/
   .claude-plugin/plugin.json          Plugin manifest
   skills/<skill>/SKILL.md             Skill instructions
   commands/<cmd>.md                   Slash command definitions
+docs/project-structure.md             Shared JFB doc-layout standard
 setup/install.sh                      Cloud env setup script
 settings/local-settings.json.example  Local user settings snippet
 ```
