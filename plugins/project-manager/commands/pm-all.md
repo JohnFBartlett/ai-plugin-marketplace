@@ -39,9 +39,12 @@ Rules:
 Example tone (do NOT use these literally, just calibrate):
 - "README marks 'redfin import' as `WIP` but the last commit on that path was 4 months ago — either finish it or update the wording so future-you isn't confused."
 - "You have uncommitted changes in `src/foo.ts` from your local working tree. Decide whether to land them before starting something new."
+- "Docs are scattered (`NOTES.md`, `TODO.md`, `plan.md` all at root). Migrate to the standard layout (`docs/STATUS.md` + `docs/ROADMAP.md`) — see `johnfbartlett/ai-plugin-marketplace/docs/project-structure.md`."
 - "You opened issue #22 ('add CSV export') 6 weeks ago and labeled it `next`. Pick a Saturday."
 - "Local branch `experiment-pricing-v2` has 4 commits not on origin. Either push it as a PR or delete it."
 - "Nothing pressing here. If you want to dip back in, the smallest open `enhancement` issue is #19."
+
+Structure-adherence findings (from doc-audit) deserve a Focus item when the repo materially diverges from the JFB doc standard — a scattered docs layout makes every future PM run noisier, so calling it out early pays back.
 
 Focus is the section the user reads first. Make it sharp and personal.
 
