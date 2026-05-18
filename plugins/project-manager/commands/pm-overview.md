@@ -1,0 +1,8 @@
+---
+description: Snapshot of each JFB repo - purpose, stack, activity, open work. Pass a repo name to focus.
+argument-hint: "[repo-name]"
+---
+
+Run the **overview** capability from the `project-manager` skill.
+
+If `$ARGUMENTS` is non-empty, narrow to that repo (partial match OK). Otherwise cover all JFB repos.

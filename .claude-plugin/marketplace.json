@@ -1,0 +1,18 @@
+{
+  "name": "jfb-marketplace",
+  "owner": {
+    "name": "John F. Bartlett",
+    "url": "https://github.com/johnfbartlett"
+  },
+  "description": "Private Claude Code plugin marketplace for JFB projects.",
+  "plugins": [
+    {
+      "name": "project-manager",
+      "source": "./plugins/project-manager",
+      "description": "Cross-repo project management: doc audits, overview, roadmap, standups, and extension pitches.",
+      "version": "0.1.0",
+      "category": "productivity",
+      "keywords": ["pm", "docs", "roadmap", "status"]
+    }
+  ]
+}

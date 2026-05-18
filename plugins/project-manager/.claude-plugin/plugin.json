@@ -1,0 +1,10 @@
+{
+  "name": "project-manager",
+  "version": "0.1.0",
+  "description": "Cross-repo project management helper for JFB repos. Skill + slash commands for doc audits, overviews, roadmaps, standups, and extension pitches.",
+  "author": {
+    "name": "John F. Bartlett",
+    "url": "https://github.com/johnfbartlett"
+  },
+  "keywords": ["pm", "docs", "roadmap", "standup"]
+}

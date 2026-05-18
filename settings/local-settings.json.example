@@ -1,0 +1,14 @@
+{
+  "_comment": "Drop the keys below into ~/.claude/settings.json (user scope) to enable JFB plugins in local sessions. Equivalent to what setup/install.sh does in cloud envs.",
+  "extraKnownMarketplaces": {
+    "jfb-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "johnfbartlett/ai-plugin-marketplace"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "project-manager@jfb-marketplace": true
+  }
+}
