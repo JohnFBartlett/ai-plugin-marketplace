@@ -6,7 +6,7 @@ Private Claude Code plugin marketplace for JFB projects.
 
 | Plugin | Description |
 |---|---|
-| `project-manager` | Cross-repo PM helper: `/pm-overview`, `/pm-roadmap`, `/pm-standup`, `/pm-doc-audit`, `/pm-doc-archive`, `/pm-pitch`. |
+| `project-manager` | Cross-repo PM helper: `/pm-all` (full sweep), or individually `/pm-overview`, `/pm-roadmap`, `/pm-standup`, `/pm-doc-audit`, `/pm-doc-archive`, `/pm-pitch`. |
 
 ## Install — cloud sessions (Claude Code on the web)
 
